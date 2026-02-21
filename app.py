@@ -1,30 +1,31 @@
-import streamlit as st
 from google import genai
+import os
 
-# 🔐 Put your NEW Gemini API key here
-client = genai.Client(api_key="AIzaSyAjbURRK2Aapv6NMSzWnAWR-o_LNtle7wE")
+# Put your NEW API key here
+API_KEY = "AIzaSyAjbURRK2Aapv6NMSzWnAWR-o_LNtle7wE"
 
-st.title("📰 AI News Intelligence System")
+client = genai.Client(api_key=API_KEY)
 
-news_text = st.text_area("Paste News Article Here")
+print("===== AI News Intelligence System =====\n")
 
-if news_text:
-    prompt = f"""
-    Analyze the following news article and provide:
+news_text = input("Paste the news article here:\n")
 
-    1. Sentiment (Positive / Negative / Neutral)
-    2. Category
-    3. Short Summary
-    4. 5 Keywords
+prompt = f"""
+Analyze the following news article and provide:
 
-    Article:
-    {news_text}
-    """
+1. Sentiment (Positive / Negative / Neutral)
+2. Category
+3. Short Summary
+4. 5 Keywords
 
-    response = client.models.generate_content(
-        model="gemini-1.5-flash-latest",
-        contents=prompt
-    )
+Article:
+{news_text}
+"""
 
-    st.subheader("AI Analysis Result")
-    st.write(response.text)
+response = client.models.generate_content(
+    model="gemini-1.5-flash",
+    contents=prompt
+)
+
+print("\n===== AI Analysis Result =====\n")
+print(response.text)
