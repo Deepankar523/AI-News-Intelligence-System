@@ -1,11 +1,10 @@
 import streamlit as st
-from google import genai
+import google.generativeai as genai
 
-if "GEMINI_API_KEY" not in st.secrets:
-    st.error("API Key not found in Streamlit Secrets.")
-    st.stop()
+# Load API key from Streamlit Secrets
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
-client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 st.title("📰 AI News Intelligence System")
 
@@ -17,19 +16,14 @@ if news_text:
 
     1. Sentiment (Positive/Negative/Neutral)
     2. Category
-    3. Summary
+    3. Short Summary
     4. 5 Keywords
 
     Article:
     {news_text}
     """
 
-    response = client.models.generate_content(
-        model="gemini-1.5-flash",
-        contents=prompt
-    )
+    response = model.generate_content(prompt)
 
     st.subheader("AI Analysis Result")
     st.write(response.text)
-
-
