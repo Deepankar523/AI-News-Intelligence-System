@@ -1,7 +1,6 @@
 import streamlit as st
 import google.generativeai as genai
 
-# Load API key from Streamlit Secrets
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
 model = genai.GenerativeModel("gemini-pro")
@@ -27,4 +26,3 @@ if news_text:
 
     st.subheader("AI Analysis Result")
     st.write(response.text)
-
