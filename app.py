@@ -5,7 +5,7 @@ if "GEMINI_API_KEY" not in st.secrets:
     st.error("API Key not found in Streamlit Secrets.")
     st.stop()
 
-client = genai.Client(api_key=st.secrets["AIzaSyAjbURRK2Aapv6NMSzWnAWR-o_LNtle7wE"])
+client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 
 st.title("📰 AI News Intelligence System")
 
@@ -31,4 +31,5 @@ if news_text:
 
     st.subheader("AI Analysis Result")
     st.write(response.text)
+
 
