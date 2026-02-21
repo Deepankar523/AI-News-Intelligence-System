@@ -1,15 +1,19 @@
 import streamlit as st
-import google.generativeai as genai
+import requests
 
-genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-
-model = genai.GenerativeModel("gemini-pro")
+API_KEY = st.secrets["GEMINI_API_KEY"]
 
 st.title("📰 AI News Intelligence System")
 
 news_text = st.text_area("Paste News Article Here")
 
 if news_text:
+    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={API_KEY}"
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+
     prompt = f"""
     Analyze the following news article and provide:
 
@@ -22,7 +26,20 @@ if news_text:
     {news_text}
     """
 
-    response = model.generate_content(prompt)
+    data = {
+        "contents": [{
+            "parts": [{"text": prompt}]
+        }]
+    }
 
-    st.subheader("AI Analysis Result")
-    st.write(response.text)
+    response = requests.post(url, headers=headers, json=data)
+
+    result = response.json()
+
+    if "candidates" in result:
+        output = result["candidates"][0]["content"]["parts"][0]["text"]
+        st.subheader("AI Analysis Result")
+        st.write(output)
+    else:
+        st.error("API Error:")
+        st.write(result)
