@@ -1,14 +1,11 @@
 import streamlit as st
-import os
 from google import genai
 
-api_key = os.getenv("AIzaSyAjbURRK2Aapv6NMSzWnAWR-o_LNtle7wE")
-
-if not api_key:
-    st.error("API Key not loaded. Check Streamlit Secrets.")
+if "GEMINI_API_KEY" not in st.secrets:
+    st.error("API Key not found in Streamlit Secrets.")
     st.stop()
 
-client = genai.Client(api_key=api_key)
+client = genai.Client(api_key=st.secrets["AIzaSyAjbURRK2Aapv6NMSzWnAWR-o_LNtle7wE"])
 
 st.title("📰 AI News Intelligence System")
 
@@ -18,10 +15,10 @@ if news_text:
     prompt = f"""
     Analyze the following news article and provide:
 
-    1. Sentiment
+    1. Sentiment (Positive/Negative/Neutral)
     2. Category
     3. Summary
-    4. Keywords
+    4. 5 Keywords
 
     Article:
     {news_text}
@@ -34,3 +31,4 @@ if news_text:
 
     st.subheader("AI Analysis Result")
     st.write(response.text)
+
