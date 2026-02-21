@@ -8,7 +8,7 @@ st.title("📰 AI News Intelligence System")
 news_text = st.text_area("Paste News Article Here")
 
 if news_text:
-    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={API_KEY}"
+    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key={API_KEY}"
 
     headers = {
         "Content-Type": "application/json"
