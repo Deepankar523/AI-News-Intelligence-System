@@ -2,8 +2,13 @@ import streamlit as st
 import os
 from google import genai
 
-# 🔐 Put your NEW Gemini API key here
-client = genai.Client(api_key=os.getenv("AIzaSyAjbURRK2Aapv6NMSzWnAWR-o_LNtle7wE"))
+api_key = os.getenv("AIzaSyAjbURRK2Aapv6NMSzWnAWR-o_LNtle7wE")
+
+if not api_key:
+    st.error("API Key not loaded. Check Streamlit Secrets.")
+    st.stop()
+
+client = genai.Client(api_key=api_key)
 
 st.title("📰 AI News Intelligence System")
 
@@ -13,10 +18,10 @@ if news_text:
     prompt = f"""
     Analyze the following news article and provide:
 
-    1. Sentiment (Positive / Negative / Neutral)
+    1. Sentiment
     2. Category
-    3. Short Summary
-    4. 5 Keywords
+    3. Summary
+    4. Keywords
 
     Article:
     {news_text}
